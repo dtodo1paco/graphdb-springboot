@@ -1,9 +1,12 @@
 package org.dtodo1paco.samples.graphdb.services;
 
+import org.dtodo1paco.samples.graphdb.model.projections.ItemCollection;
 import org.dtodo1paco.samples.util.FileUtils;
 import org.neo4j.driver.Driver;
+import org.neo4j.driver.Record;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.SessionConfig;
+import org.neo4j.driver.types.TypeSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,8 +54,20 @@ public class DatabaseService {
       logger.debug("Running query: {}",query);
     }
     Collection<Map<String, Object>> result = client.query(query).fetch().all();
-    logger.info("AAA " + result);
     return result;
+  }
+
+  public Collection<ItemCollection> findKeyValue(String query, Integer limit) {
+    Neo4jClient.RunnableSpecTightToDatabase res = client.query(query);
+    res = res.bind(limit).to("limit");
+    if (logger.isDebugEnabled()) {
+      logger.debug("Fetching {} records of query: {}" ,limit, query);
+    }
+    return res.fetchAs(ItemCollection.class)
+             .mappedBy((TypeSystem t, Record record) -> {
+               return new ItemCollection(record.asMap());
+             })
+             .all();
   }
 
   private static Logger logger = LoggerFactory.getLogger(DatabaseService.class);

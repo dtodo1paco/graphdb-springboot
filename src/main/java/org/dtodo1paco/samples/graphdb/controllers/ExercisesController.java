@@ -1,5 +1,6 @@
 package org.dtodo1paco.samples.graphdb.controllers;
 
+import org.dtodo1paco.samples.graphdb.model.projections.ItemCollection;
 import org.dtodo1paco.samples.graphdb.model.projections.Person3rdGradeContacts;
 import org.dtodo1paco.samples.graphdb.services.DatabaseService;
 import org.dtodo1paco.samples.graphdb.services.PersonService;
@@ -34,4 +35,12 @@ public class ExercisesController {
     return personService.find3rdGradeContacts(personNameToStart, limit);
   }
 
+  @GetMapping("/section_03/exercise_02")
+  public Collection<ItemCollection> findMoviesThatContactDirected(
+    @RequestParam(value = "limit", defaultValue = "3") Integer limit) {
+    String query = "MATCH (p1:Person)-[:HAS_CONTACT]-(p2) " +
+      "OPTIONAL MATCH (p2)-[:DIRECTED]->(m)"+
+       "RETURN p1.name as person, p2.name as director, m.title as movieTitle";
+    return db.findKeyValue(query, limit);
+  }
 }
