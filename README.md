@@ -7,13 +7,13 @@
   <img src="https://img.shields.io/badge/java-%3E%3D1.11.0-blue.svg" />
 </p>
 <p>
-  <a href="https://github.com/dtodo1paco/microfrontends#readme" target="_blank">
+  <a href="https://github.com/dtodo1paco/graphdb-springboot#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
-  <a href="https://github.com/dtodo1paco/microfrontends/graphs/commit-activity" target="_blank">
+  <a href="https://github.com/dtodo1paco/graphdb-springboot/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="https://github.com/dtodo1paco/microfrontends/container/blob/master/container/LICENSE.md" target="_blank">
+  <a href="https://github.com/dtodo1paco/graphdb-springboot/container/blob/main/container/LICENSE.md" target="_blank">
     <img alt="License: BSD 2-Clause" src="https://img.shields.io/badge/BSD2-BSD%202--clause-yellowgreen" />
   </a>
   <a href="https://twitter.com/dtodo1paco" target="_blank">
@@ -56,6 +56,10 @@ I've used the course exercises as an example to write some endpoints.
 
 ## TL;TR; 
 This is a simple backend to connect with a Neo4J Graph database through an API.
+
+![Swagger API|Full Rest](https://github.com/dtodo1paco/graphdb-springboot/raw/main/screenshots/full_REST_API.png)
+
+![Swagger API|Exercises](https://github.com/dtodo1paco/graphdb-springboot/raw/main/screenshots/exercises_implementation.png)
 
 
 ### Built With
