@@ -1,6 +1,6 @@
 package org.dtodo1paco.samples.graphdb.services;
 
-import org.dtodo1paco.samples.graphdb.model.projections.ItemCollection;
+import org.dtodo1paco.samples.graphdb.model.projections.ItemProperties;
 import org.dtodo1paco.samples.util.FileUtils;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
@@ -57,15 +57,15 @@ public class DatabaseService {
     return result;
   }
 
-  public Collection<ItemCollection> findKeyValue(String query, Integer limit) {
-    Neo4jClient.RunnableSpecTightToDatabase res = client.query(query);
+  public Collection<ItemProperties> findItems(String query, Integer limit) {
+    Neo4jClient.RunnableSpecTightToDatabase res = client.query(query + (limit != null ? " LIMIT $limit" : ""));
     res = res.bind(limit).to("limit");
     if (logger.isDebugEnabled()) {
       logger.debug("Fetching {} records of query: {}" ,limit, query);
     }
-    return res.fetchAs(ItemCollection.class)
+    return res.fetchAs(ItemProperties.class)
              .mappedBy((TypeSystem t, Record record) -> {
-               return new ItemCollection(record.asMap());
+               return new ItemProperties(record.asMap());
              })
              .all();
   }

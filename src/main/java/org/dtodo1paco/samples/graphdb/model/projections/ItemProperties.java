@@ -5,6 +5,6 @@ import lombok.Value;
 import java.util.Map;
 
 @Value
-public class ItemCollection {
+public class ItemProperties {
   Map<String, Object> item;
 }
