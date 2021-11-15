@@ -1,6 +1,6 @@
 package org.dtodo1paco.samples.graphdb.controllers;
 
-import org.dtodo1paco.samples.graphdb.model.projections.ItemCollection;
+import org.dtodo1paco.samples.graphdb.model.projections.ItemProperties;
 import org.dtodo1paco.samples.graphdb.model.projections.Person3rdGradeContacts;
 import org.dtodo1paco.samples.graphdb.services.DatabaseService;
 import org.dtodo1paco.samples.graphdb.services.PersonService;
@@ -36,11 +36,22 @@ public class ExercisesController {
   }
 
   @GetMapping("/section_03/exercise_02")
-  public Collection<ItemCollection> findMoviesThatContactDirected(
+  public Collection<ItemProperties> findMoviesThatContactDirected(
     @RequestParam(value = "limit", defaultValue = "3") Integer limit) {
     String query = "MATCH (p1:Person)-[:HAS_CONTACT]-(p2) " +
       "OPTIONAL MATCH (p2)-[:DIRECTED]->(m)"+
        "RETURN p1.name as person, p2.name as director, m.title as movieTitle";
-    return db.findKeyValue(query, limit);
+    return db.findItems(query, limit);
+  }
+
+  @GetMapping("/section_04/exercise_01")
+  public Collection<ItemProperties> findTomHankContactsBornAfter1960AndEarntOver10MIn1Movie(
+    @RequestParam(value = "limit", defaultValue = "3") Integer limit) {
+    String query = "MATCH (tom:Person{name: 'Tom Hanks'}) "
+      + "MATCH (tom)-[:HAS_CONTACT]->(contact:Person) "
+      + "MATCH (contact)-[role:ACTED_IN]->(movie:Movie) "
+      + "WHERE contact.born >= 1960 AND role.earnings > 10000000 "
+      + "RETURN contact.name, contact.born, movie.title, role.earnings ";
+    return db.findItems(query, limit);
   }
 }
