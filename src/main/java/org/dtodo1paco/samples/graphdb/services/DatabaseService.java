@@ -57,13 +57,16 @@ public class DatabaseService {
     return result;
   }
 
-  public Collection<ItemProperties> findItems(String query, Integer limit) {
-    Neo4jClient.RunnableSpecTightToDatabase res = client.query(query + (limit != null ? " LIMIT $limit" : ""));
-    res = res.bind(limit).to("limit");
+  public Collection<ItemProperties> findItems(String query, Map<String, Object> params, Integer limit) {
+    final Neo4jClient.RunnableSpecTightToDatabase[] res = {client.query(query + (limit != null ? " LIMIT $limit" : ""))};
+    if (params != null) {
+      params.entrySet().stream().forEach( p -> res[0] = res[0].bind(p.getValue()).to(p.getKey()));
+    }
+    res[0] = res[0].bind(limit).to("limit");
     if (logger.isDebugEnabled()) {
       logger.debug("Fetching {} records of query: {}" ,limit, query);
     }
-    return res.fetchAs(ItemProperties.class)
+    return res[0].fetchAs(ItemProperties.class)
              .mappedBy((TypeSystem t, Record record) -> {
                return new ItemProperties(record.asMap());
              })
